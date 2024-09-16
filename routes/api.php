@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\OccurrenceController;
 use App\Http\Controllers\PhoneCallController;
 use App\Http\Controllers\SegmentController;
 use App\Http\Controllers\UserController;
@@ -71,5 +72,13 @@ Route::middleware('jwt')->group(function(){
         Route::post('create', [PhoneCallController::class, 'create']);
         Route::patch('{id}', [PhoneCallController::class, 'update']);
         Route::delete('{id}', [PhoneCallController::class, 'delete']);
-    });    
+    });  
+    
+    Route::prefix('occurrence')->group(function(){
+        Route::get('all', [OccurrenceController::class, 'all']);
+        Route::get('search', [OccurrenceController::class, 'search']);
+        Route::post('create', [OccurrenceController::class, 'create']);
+        Route::patch('{id}', [OccurrenceController::class, 'update']);
+        Route::delete('{id}', [OccurrenceController::class, 'delete']);
+    });  
 });
