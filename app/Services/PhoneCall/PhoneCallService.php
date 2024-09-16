@@ -4,6 +4,7 @@ namespace App\Services\PhoneCall;
 
 use App\Models\PhoneCall;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class PhoneCallService
@@ -69,7 +70,10 @@ class PhoneCallService
                 return ['status' => false, 'error' => $validator->errors(), 'statusCode' => 400];
             }
 
-            $phoneCall = PhoneCall::create($validator->validated());
+            $data = $validator->validated();
+            $data['user_id'] = Auth::user()->id;
+
+            $phoneCall = PhoneCall::create($data);
 
             return ['status' => true, 'data' => $phoneCall];
         } catch (Exception $error) {
@@ -101,7 +105,10 @@ class PhoneCallService
 
             if (!$phoneCall) throw new Exception('Chamada telefônica não encontrada');
 
-            $phoneCall->update($validator->validated());
+            $data = $validator->validated();
+            $data['user_id'] = Auth::user()->id;
+
+            $phoneCall->update($data);
 
             return ['status' => true, 'data' => $phoneCall];
         } catch (Exception $error) {
