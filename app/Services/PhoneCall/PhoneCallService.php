@@ -53,8 +53,7 @@ class PhoneCallService
     public function create($request)
     {
         try {
-            $rules = [
-                'user_id' => 'required|exists:users,id',
+            $rules = [                
                 'company' => 'required|string|max:255',
                 'phone' => 'required|string|max:15',
                 'domain' => 'required|string|max:255',
@@ -85,7 +84,6 @@ class PhoneCallService
     {
         try {
             $rules = [
-                'user_id' => 'required|exists:users,id',
                 'company' => 'required|string|max:255',
                 'phone' => 'required|string|max:15',
                 'domain' => 'required|string|max:255',
