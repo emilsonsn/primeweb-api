@@ -73,6 +73,7 @@ class UserService
             $rules = [
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
+                'phone' => 'required|string|max:255',
                 'password' => 'nullable|string|min:8',
                 'role' => 'nullable|string|in:Seller,Consultant,Manager,Admin'
             ];
@@ -108,6 +109,7 @@ class UserService
             $rules = [
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users,email,' . $user_id,
+                'phone' => 'required|string|max:255',
                 'password' => 'nullable|string|min:8',
                 'role' => 'nullable|string|in:Seller,Consultant,Manager,Admin'
             ];
