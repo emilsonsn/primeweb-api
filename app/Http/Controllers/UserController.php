@@ -25,12 +25,6 @@ class UserController extends Controller
         return $result;
     }
 
-    public function cards(Request $request){
-        $result = $this->userService->cards($request);
-
-        return $this->response($result);
-    }
-
     public function getUser(){
         $result = $this->userService->getUser();
 
@@ -80,29 +74,4 @@ class UserController extends Controller
         ], $result['statusCode'] ?? 200);
     }
 
-    public function positionSearch(Request $request){
-        $result = $this->userService->positionSearch($request);
-
-        return $result;
-    }
-
-    public function sectorSearch(Request $request){
-        $result = $this->userService->sectorSearch($request);
-
-        return $result;
-    }
-
-    public function sectorCreate(Request $request){
-        $result = $this->userService->sectorCreate($request);
-
-        if($result['status']) $result['message'] = "Setor criado com sucesso";
-        return $this->response($result);
-    }
-
-    public function sectorDelete($id){
-        $result = $this->userService->sectorDelete($id);
-
-        if($result['status']) $result['message'] = "Setor deletado com sucesso";
-        return $this->response($result);
-    }
 }

@@ -27,14 +27,8 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
-        'phone',
-        'whatsapp',
-        'cpf_cnpj',
-        'birth_date',
-        'company_position_id',
-        'sector_id',
         'is_active',
-        'photo'
+        'role'
     ];
 
     /**
@@ -67,11 +61,4 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function sector(){
-        return $this->belongsTo(Sector::class);
-    }
-
-    public function companyPosition(){
-        return $this->belongsTo(CompanyPosition::class);
-    }
 }

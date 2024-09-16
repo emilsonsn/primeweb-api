@@ -15,13 +15,14 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $position = auth()->user()->companyPosition->position;
+        $position = auth()->user()->role;
 
         if(isset($position)){
             switch($position){
                 case 'Admin':
-                case 'Financial':
-                case 'Supplies':
+                case 'Manager':
+                case 'Consultant':
+                case 'Seller':
                     return $next($request);
                 default:
                     return response()->json(['error' => 'Unauthorized'], 403);
