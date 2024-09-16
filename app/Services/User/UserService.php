@@ -153,6 +153,21 @@ class UserService
         }
     }
 
+    public function delete($user_id)
+    {
+        try {
+            $user = User::find($user_id);
+
+            if (!$user) throw new Exception('Usuário não encontrado');
+            
+            $user->delete();
+
+            return ['status' => true, 'data' => $user];
+        } catch (Exception $error) {
+            return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
+        }
+    }
+
     public function requestRecoverPassword($request)
     {
         try {

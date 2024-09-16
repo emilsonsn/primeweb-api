@@ -12,7 +12,7 @@ class PhoneCallService
     public function all()
     {
         try {
-            $phoneCalls = PhoneCall::all();
+            $phoneCalls = PhoneCall::with(['user'])->all();
 
             return ['status' => true, 'data' => $phoneCalls];
         } catch (Exception $error) {
@@ -28,7 +28,7 @@ class PhoneCallService
             $domain = $request->domain;
             $phone = $request->phone;
 
-            $phoneCalls = PhoneCall::query();
+            $phoneCalls = PhoneCall::with(['user']);
 
             if (isset($company)) {
                 $phoneCalls->where('company', 'LIKE', "%{$company}%");

@@ -43,6 +43,7 @@ Route::middleware('jwt')->group(function(){
         Route::post('create', [UserController::class, 'create']);
         Route::patch('{id}', [UserController::class, 'update']);
         Route::post('block/{id}', [UserController::class, 'userBlock']);
+        Route::delete('{id}', [UserController::class, 'delete']);
     });
 
     // Rotas para Contacts
