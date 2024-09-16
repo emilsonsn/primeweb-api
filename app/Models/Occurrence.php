@@ -6,20 +6,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Segment extends Model
+class Occurrence extends Model
 {
     use HasFactory, SoftDeletes;
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
-    public $table = 'segments';
+    public $table = 'occurrences';
 
-    public $fillable= [
+    public $fillable = [
         'user_id',
-        'name',
+        'date',
+        'time',
         'status',
+        'link',
+        'observations',
     ];
+
 
     public function user(){
         return $this->belongsTo(User::class);
