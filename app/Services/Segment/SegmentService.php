@@ -12,7 +12,7 @@ class SegmentService
     public function all()
     {
         try {
-            $segments = Segment::all();
+            $segments = Segment::with(['user']);
 
             return ['status' => true, 'data' => $segments];
         } catch (Exception $error) {
@@ -27,7 +27,7 @@ class SegmentService
             $name = $request->name;
             $status = $request->status;
 
-            $segments = Segment::query();
+            $segments = Segment::with(['user']);
 
             if (isset($name)) {
                 $segments->where('name', 'LIKE', "%{$name}%");
