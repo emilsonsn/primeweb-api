@@ -2,6 +2,7 @@
 
 namespace App\Services\Segment;
 
+use App\Models\Log;
 use App\Models\Segment;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -65,6 +66,8 @@ class SegmentService
 
             $segment = Segment::create($data);
 
+            Log::create([Auth::user()->id, "Criou o segmento {$segment->name} ($segment->id)", request()->ip()]);
+
             return ['status' => true, 'data' => $segment];
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
@@ -91,6 +94,8 @@ class SegmentService
 
             $segment->update($validator->validated());
 
+            Log::create([Auth::user()->id, "Editou o segmento {$segment->name} ($segment->id)", request()->ip()]);
+
             return ['status' => true, 'data' => $segment];
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
@@ -104,7 +109,12 @@ class SegmentService
 
             if (!$segment) throw new Exception('Segmento não encontrado');
 
+            $name = $segment->name;
+            $id = $segment->id;
+            
             $segment->delete();
+
+            Log::create([Auth::user()->id, "Editou o segmento {$name} ($id)", request()->ip()]);
 
             return ['status' => true];
         } catch (Exception $error) {

@@ -6,7 +6,9 @@ use App\Models\Contact;
 use App\Models\ContactPhone;
 use App\Models\ContactEmail;
 use App\Models\ContactSegment;
+use App\Models\Log;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ContactService
@@ -124,6 +126,8 @@ class ContactService
                 }
             }
 
+            Log::create([Auth::user()->id, "Cadastrou um contato {$request->company}(#{{$contact->id}})", request()->ip()]);
+
             return ['status' => true, 'data' => $contact];
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
@@ -196,6 +200,8 @@ class ContactService
                 }
             }
 
+            Log::create([Auth::user()->id, "Editou um contato {$request->company}(#{{$contact->id}})", request()->ip()]);
+
             return ['status' => true, 'data' => $contact];
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
@@ -209,7 +215,11 @@ class ContactService
 
             if (!$contact) throw new Exception('Contato não encontrado');
 
+            $company = $contact->company;
+            $id = $contact->id;
             $contact->delete();
+
+            Log::create([Auth::user()->id, "Apagou o contato {$company}(#{{$id}})", request()->ip()]);
 
             return ['status' => true];
         } catch (Exception $error) {
@@ -224,7 +234,10 @@ class ContactService
 
             if (!$contactPhone) throw new Exception('Telefone não encontrado');
 
+            $contact = $contactPhone->contact;
             $contactPhone->delete();
+
+            Log::create([Auth::user()->id, "Apagou o telefone do contato {$contact->company}(#{{$contact->id}})", request()->ip()]);
 
             return ['status' => true];
         } catch (Exception $error) {
@@ -239,7 +252,10 @@ class ContactService
 
             if (!$contactEmail) throw new Exception('Email não encontrado');
 
+            $contact = $contactEmail->contact;
             $contactEmail->delete();
+
+            Log::create([Auth::user()->id, "Apagou o telefone do contato {$contact->company}(#{{$contact->id}})", request()->ip()]);
 
             return ['status' => true];
         } catch (Exception $error) {
@@ -254,7 +270,10 @@ class ContactService
 
             if (!$contactSegment) throw new Exception('Segmento não encontrado');
 
+            $contact = $contactSegment->contact;
             $contactSegment->delete();
+
+            Log::create([Auth::user()->id, "Apagou o telefone do contato {$contact->company}(#{{$contact->id}})", request()->ip()]);
 
             return ['status' => true];
         } catch (Exception $error) {

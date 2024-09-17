@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PasswordRecoveryMail;
 use App\Mail\WelcomeMail;
+use App\Models\Log;
 use App\Models\PasswordRecover;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -93,6 +94,8 @@ class UserService
 
             $user = User::create($requestData);
 
+            Log::create([Auth::user()->id, "Criou o usuário {$user->name} ({$user->id})", request()->ip()]);
+
             Mail::to($user->email)->send(new WelcomeMail($user->name, $user->email, $password));
 
             return ['status' => true, 'data' => $user];
@@ -130,6 +133,8 @@ class UserService
 
             $userToUpdate->update($data);
 
+            Log::create([Auth::user()->id, "Editou o usuário {$userToUpdate->name} ({$userToUpdate->id})", request()->ip()]);
+
             return ['status' => true, 'data' => $userToUpdate];
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
@@ -147,6 +152,10 @@ class UserService
             $user->is_active = !$user->is_active;
             $user->save();
 
+            $status = $user->is_active ? "Desbloqueou" : "Bloqueou";
+            
+            Log::create([Auth::user()->id, "$status o usuário {$user->name} ({$user->id})", request()->ip()]);
+
             return ['status' => true, 'data' => $user];
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
@@ -159,8 +168,13 @@ class UserService
             $user = User::find($user_id);
 
             if (!$user) throw new Exception('Usuário não encontrado');
-            
+
+            $name = $user->name;
+            $id = $user->id;
+
             $user->delete();
+
+            Log::create([Auth::user()->id, "Deletou o usuário {$name} ({$id})", request()->ip()]);
 
             return ['status' => true, 'data' => $user];
         } catch (Exception $error) {
@@ -188,10 +202,12 @@ class UserService
             }
 
             Mail::to($email)->send(new PasswordRecoveryMail($code));
+
+            Log::create([Auth::user()->id, "Solicitou troca de senha", request()->ip()]);
+
             return ['status' => true, 'data' => $user];
 
         } catch (Exception $error) {
-            Log::error('Erro na recuperação de senha: ' . $error->getMessage());
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
         }
     }
@@ -209,6 +225,8 @@ class UserService
             $user->password = Hash::make($password);
             $user->save();
             $recovery->delete();
+
+            Log::create([Auth::user()->id, "Trocou de senha", request()->ip()]);
 
             return ['status' => true, 'data' => $user];
         }catch(Exception $error) {

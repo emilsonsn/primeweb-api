@@ -10,8 +10,6 @@ class ContactSegment extends Model
 {
     use HasFactory;
 
-
-
     public $table = 'contact_segments';
     public $timestamps= false;
     
