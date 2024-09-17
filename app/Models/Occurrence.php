@@ -17,6 +17,8 @@ class Occurrence extends Model
 
     public $fillable = [
         'user_id',
+        'phone_call_id',
+        'contact_id',
         'date',
         'time',
         'status',
@@ -27,5 +29,13 @@ class Occurrence extends Model
 
     public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    public function contact(){
+        return $this->belongsTo(Contact::class)->with('emails');
+    }
+
+    public function phone_call(){
+        return $this->belongsTo(PhoneCall::class);
     }
 }

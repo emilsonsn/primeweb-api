@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Mail\OccurrenceMail;
 use App\Models\Occurrence;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class OccurrenceService
@@ -59,7 +61,9 @@ class OccurrenceService
                 'time' => 'required',
                 'status' => 'required|in:Lead,PresentationVisit,ConvertedContact,SchedulingVisit,ReschedulingVisit,DelegationContact,InNegotiation,Closed,Lost',
                 'link' => 'nullable|url',
-                'observations' => 'nullable|string'
+                'observations' => 'nullable|string',
+                'phone_call_id' => 'nullable|interger',
+                'contact_id' => 'nullable|interger',
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -74,11 +78,23 @@ class OccurrenceService
             $occurrence = Occurrence::create($data);
 
             if (in_array($occurrence->status, ['PresentationVisit', 'SchedulingVisit', 'ReschedulingVisit'])) {
-                // Mail::to($user->email)->send(new WelcomeMail($user->name, $user->email, $password));                
+                $phone = $occurrence->contact->user->phone;
+                $clientName = $occurrence->contact->company;
+                $url = $occurrence->link;
+                $date = $occurrence->date;
+                $time = $occurrence->time;
+
+                foreach($occurrence->contact->emails as $email){
+                    Mail::to($email)->send(new OccurrenceMail(
+                        $phone,
+                        $clientName,
+                        $url,
+                        $date,
+                        $time
+                    ));
+                }
             }
             
-
-
             return ['status' => true, 'data' => $occurrence];
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
