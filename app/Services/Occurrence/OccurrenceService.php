@@ -12,7 +12,7 @@ class OccurrenceService
     public function all()
     {
         try {
-            $occurrences = Occurrence::all();
+            $occurrences = Occurrence::with(['user']);
 
             return ['status' => true, 'data' => $occurrences];
         } catch (Exception $error) {
@@ -25,7 +25,7 @@ class OccurrenceService
         try {
             $perPage = $request->input('take', 10);
 
-            $occurrences = Occurrence::query();
+            $occurrences = Occurrence::with(['user']);
 
             if($request->is_calendar){
                 $occurrences->whereIn('status', ['PresentationVisit','SchedulingVisit','ReschedulingVisit']);
@@ -57,7 +57,7 @@ class OccurrenceService
             $rules = [
                 'date' => 'required|date',
                 'time' => 'required',
-                'status' => 'required|in:Lead,PresentationVisit,SchedulingVisit,ReschedulingVisit,DelegationContact,InNegotiation,Closed,Lost',
+                'status' => 'required|in:Lead,PresentationVisit,ConvertedContact,SchedulingVisit,ReschedulingVisit,DelegationContact,InNegotiation,Closed,Lost',
                 'link' => 'nullable|url',
                 'observations' => 'nullable|string'
             ];
@@ -72,6 +72,12 @@ class OccurrenceService
             $data['user_id'] = Auth::user()->id;
 
             $occurrence = Occurrence::create($data);
+
+            if (in_array($occurrence->status, ['PresentationVisit', 'SchedulingVisit', 'ReschedulingVisit'])) {
+                // Mail::to($user->email)->send(new WelcomeMail($user->name, $user->email, $password));                
+            }
+            
+
 
             return ['status' => true, 'data' => $occurrence];
         } catch (Exception $error) {
@@ -88,7 +94,7 @@ class OccurrenceService
             $rules = [                
                 'date' => 'date',
                 'time' => 'nullable',
-                'status' => 'in:Lead,PresentationVisit,SchedulingVisit,ReschedulingVisit,DelegationContact,InNegotiation,Closed,Lost',
+                'status' => 'required|in:Lead,PresentationVisit,ConvertedContact,SchedulingVisit,ReschedulingVisit,DelegationContact,InNegotiation,Closed,Lost',
                 'link' => 'nullable|url',
                 'observations' => 'nullable|string'
             ];
@@ -121,4 +127,5 @@ class OccurrenceService
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
         }
     }
+    
 }

@@ -21,6 +21,9 @@ use App\Http\Middleware\AdminMiddleware;
 */
 
 Route::post('login', [AuthController::class, 'login']);
+Route::get('teste', function(){
+    return view('emails.occurrence');
+});
 
 Route::get('validateToken', [AuthController::class, 'validateToken']);
 Route::post('recoverPassword', [UserController::class, 'passwordRecovery']);
