@@ -46,6 +46,6 @@ class Contact extends Model
     }
 
     public function segments(){
-        return $this->hasMany(ContactSegment::class);
+        return $this->hasMany(ContactSegment::class)->with(['segment']);
     }
 }
