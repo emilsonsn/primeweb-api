@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OccurrenceController;
 use App\Http\Controllers\PhoneCallController;
 use App\Http\Controllers\SegmentController;
@@ -88,5 +89,10 @@ Route::middleware('jwt')->group(function(){
     
     Route::prefix('log')->group(function(){
         Route::get('search', [LogController::class, 'search']);
+    }); 
+
+    Route::prefix('notification')->group(function(){
+        Route::get('search', [NotificationController::class, 'search']);
+        Route::post('see', [NotificationController::class, 'see']);
     }); 
 });
