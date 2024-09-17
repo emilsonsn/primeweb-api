@@ -2,6 +2,7 @@
 
 namespace App\Services\Contact;
 
+use App\Enums\RolesEnum;
 use App\Models\Contact;
 use App\Models\ContactPhone;
 use App\Models\ContactEmail;
@@ -29,6 +30,14 @@ class ContactService
         try {
             $perPage = $request->input('take', 10);
             $contacts = Contact::with(['phones', 'emails', 'segments']);
+
+            $auth = Auth::user();
+
+            $is_seller = $auth->role == RolesEnum::Seller->value;
+
+            $contacts->when($is_seller, function ($query) use ($auth) {
+                $query->where('user_id', $auth->id);
+            });
 
             if ($request->filled('company')) {
                 $contacts->where('company', 'LIKE', "%{$request->company}%");

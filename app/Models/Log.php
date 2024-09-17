@@ -9,10 +9,10 @@ class Log extends Model
 {
     use HasFactory;
 
+    public $table = 'logs';
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-
-    public $table = 'logs';
 
     public $fillable = [
         'user_id',

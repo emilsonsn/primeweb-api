@@ -2,6 +2,7 @@
 
 namespace App\Services\PhoneCall;
 
+use App\Enums\RolesEnum;
 use App\Models\PhoneCall;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,13 @@ class PhoneCallService
             $phone = $request->phone;
 
             $phoneCalls = PhoneCall::with(['user']);
+
+            $auth = Auth::user();
+            $is_seller = $auth->role == RolesEnum::Seller->value;
+
+            $phoneCalls->when($is_seller, function ($query) use ($auth) {
+                $query->where('user_id', $auth->id);
+            });
 
             if (isset($company)) {
                 $phoneCalls->where('company', 'LIKE', "%{$company}%");

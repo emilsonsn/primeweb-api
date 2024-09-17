@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\RolesEnum;
 use App\Mail\OccurrenceMail;
 use App\Models\Log;
 use App\Models\Occurrence;
@@ -29,6 +30,13 @@ class OccurrenceService
             $perPage = $request->input('take', 10);
 
             $occurrences = Occurrence::with(['user']);
+
+            $auth = Auth::user();
+            $is_seller = $auth->role == RolesEnum::Seller->value;
+
+            $occurrences->when($is_seller, function ($query) use ($auth) {
+                $query->where('user_id', $auth->id);
+            });
 
             if($request->is_calendar){
                 $occurrences->whereIn('status', ['PresentationVisit','SchedulingVisit','ReschedulingVisit']);
