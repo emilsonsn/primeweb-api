@@ -87,7 +87,11 @@ class OccurrenceService
             $occurrence = Occurrence::create($data);
             $model = $request->phone_call_id ? "telefonema ({$request->phone_call_id})" : "contato ({$request->contact_id})";
 
-            Log::create([Auth::user()->id, "Criou a ocorrência para o $model", request()->ip()]);
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'action' => "Criou a ocorrência para o $model",
+                'ip' => request()->ip()
+            ]);
 
             if (in_array($occurrence->status, ['PresentationVisit', 'SchedulingVisit', 'ReschedulingVisit'])) {
                 $phone = $occurrence->contact->user->phone;
@@ -138,7 +142,11 @@ class OccurrenceService
             $occurrence->update($data);
             $model = $occurrence->phone_call_id ? "telefonema ({$occurrence->phone_call_id})" : "contato ({$occurrence->contact_id})";
             
-            Log::create([Auth::user()->id, "Editou a ocorrência para o $model", request()->ip()]);
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'action' => "Editou a ocorrência para o $model",
+                'ip' => request()->ip()]
+            );
             return ['status' => true, 'data' => $occurrence];
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
