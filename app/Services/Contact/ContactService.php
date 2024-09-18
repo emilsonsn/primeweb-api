@@ -187,7 +187,7 @@ class ContactService
             $data = $validator->validated();
             $data['user_id'] = $data['user_id'] ?? Auth::user()->id;
 
-            $contact->update($validator->validated());
+            $contact->update($data);
 
             DB::transaction(function () use ($request, $contact) {
 
