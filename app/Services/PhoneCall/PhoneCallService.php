@@ -3,6 +3,7 @@
 namespace App\Services\PhoneCall;
 
 use App\Enums\RolesEnum;
+use App\Models\Log;
 use App\Models\PhoneCall;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -83,6 +84,12 @@ class PhoneCallService
 
             $phoneCall = PhoneCall::create($data);
 
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'action' => "Criou um telefonema {$phoneCall->company}(#{{$phoneCall->id}})",
+                'ip' => request()->ip()
+            ]);
+
             return ['status' => true, 'data' => $phoneCall];
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
@@ -109,16 +116,22 @@ class PhoneCallService
                 throw new Exception($validator->errors());
             }
 
-            $phoneCall = PhoneCall::find($phone_call_id);
+            $phoneCallToUpdate = PhoneCall::find($phone_call_id);
 
-            if (!$phoneCall) throw new Exception('Chamada telefônica não encontrada');
+            if (!$phoneCallToUpdate) throw new Exception('Chamada telefônica não encontrada');
 
             $data = $validator->validated();
             $data['user_id'] = $data['user_id'] ?? Auth::user()->id;
 
-            $phoneCall->update($data);
+            $phoneCallToUpdate->update($data);
 
-            return ['status' => true, 'data' => $phoneCall];
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'action' => "Editou o telefonema {$phoneCallToUpdate->company}(#{{$phoneCallToUpdate->id}})",
+                'ip' => request()->ip()
+            ]);
+
+            return ['status' => true, 'data' => $phoneCallToUpdate];
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
         }
@@ -131,7 +144,16 @@ class PhoneCallService
 
             if (!$phoneCall) throw new Exception('Chamada telefônica não encontrada');
 
+            $company = $phoneCall->company;
+            $id = $phoneCall->id;
+
             $phoneCall->delete();
+
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'action' => "Editou o telefonema {$company}(#{{$id}})",
+                'ip' => request()->ip()
+            ]);
 
             return ['status' => true];
         } catch (Exception $error) {
