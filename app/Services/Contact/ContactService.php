@@ -107,18 +107,20 @@ class ContactService
             }
 
             $contact = Contact::create($validator->validated());
-
-            if ($request->phones) {
-                foreach ($request->phones as $phone) {
+            
+            if ($request->phones != 'null') {
+                $phones = !is_array($request->phones) ? json_decode($request->phones, true) : $request->phones;
+                foreach ($phones as $phone) {
                     ContactPhone::create([
                         'phone' => $phone['phone'],
                         'contact_id' => $contact->id
                     ]);
                 }
             }
-
-            if ($request->emails) {
-                foreach ($request->emails as $email) {
+            
+            if ($request->emails != 'null') {
+                $emails = !is_array($request->emails) ? json_decode($request->emails, true) : $request->emails;
+                foreach ($emails as $email) {
                     ContactEmail::create([
                         'email' => $email['email'],
                         'contact_id' => $contact->id
@@ -126,8 +128,9 @@ class ContactService
                 }
             }
 
-            if ($request->segments) {
-                foreach ($request->segments as $segment) {
+            if ($request->segments != 'null') {
+                $segments = !is_array($request->segments) ? json_decode($request->segments, true) : $request->segments;
+                foreach ($segments as $segment) {
                     ContactSegment::create([
                         'segment_id' => $segment['id'],
                         'contact_id' => $contact->id
