@@ -10,6 +10,7 @@ use App\Models\ContactSegment;
 use App\Models\Log;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ContactService
@@ -80,7 +81,7 @@ class ContactService
     {
         try {
             $rules = [
-                'user_id' => 'required|exists:users,id',
+                'user_id' => 'nullable|exists:users,id',
                 'company' => 'required|string|max:255',
                 'domain' => 'required|string|max:255',
                 'responsible' => 'required|string|max:255',
@@ -106,7 +107,10 @@ class ContactService
                 return ['status' => false, 'error' => $validator->errors(), 'statusCode' => 400];
             }
 
-            $contact = Contact::create($validator->validated());
+            $data = $validator->validated();
+            $data['user_id'] = $data['user_id'] ?? Auth::user()->id;
+
+            $contact = Contact::create($data);
             
             if ($request->phones != 'null') {
                 $phones = !is_array($request->phones) ? json_decode($request->phones, true) : $request->phones;
@@ -150,7 +154,7 @@ class ContactService
     {
         try {
             $rules = [
-                'user_id' => 'required|exists:users,id',
+                'user_id' => 'nullable|exists:users,id',
                 'company' => 'required|string|max:255',
                 'domain' => 'required|string|max:255',
                 'responsible' => 'required|string|max:255',
@@ -180,37 +184,43 @@ class ContactService
 
             if (!$contact) throw new Exception('Contato não encontrado');
 
+            $data = $validator->validated();
+            $data['user_id'] = $data['user_id'] ?? Auth::user()->id;
+
             $contact->update($validator->validated());
 
-            ContactPhone::where('contact_id', $contact->id)->delete();
-            if ($request->phones) {
-                foreach ($request->phones as $phone) {
-                    ContactPhone::create([
-                        'phone' => $phone['phone'],
-                        'contact_id' => $contact->id
-                    ]);
-                }
-            }
+            DB::transaction(function () use ($request, $contact) {
 
-            ContactEmail::where('contact_id', $contact->id)->delete();
-            if ($request->emails) {
-                foreach ($request->emails as $email) {
-                    ContactEmail::create([
-                        'email' => $email['email'],
-                        'contact_id' => $contact->id
-                    ]);
+                ContactPhone::where('contact_id', $contact->id)->delete();
+                if ($request->phones) {
+                    foreach ($request->phones as $phone) {
+                        ContactPhone::create([
+                            'phone' => $phone['phone'],
+                            'contact_id' => $contact->id
+                        ]);
+                    }
                 }
-            }
 
-            ContactSegment::where('contact_id', $contact->id)->delete();
-            if ($request->segments) {
-                foreach ($request->segments as $segment) {
-                    ContactSegment::create([
-                        'segment_id' => $segment['id'],
-                        'contact_id' => $contact->id
-                    ]);
+                ContactEmail::where('contact_id', $contact->id)->delete();
+                if ($request->emails) {
+                    foreach ($request->emails as $email) {
+                        ContactEmail::create([
+                            'email' => $email['email'],
+                            'contact_id' => $contact->id
+                        ]);
+                    }
                 }
-            }
+
+                ContactSegment::where('contact_id', $contact->id)->delete();
+                if ($request->segments) {
+                    foreach ($request->segments as $segment) {
+                        ContactSegment::create([
+                            'segment_id' => $segment['id'],
+                            'contact_id' => $contact->id
+                        ]);
+                    }
+                }
+            });
 
             Log::create([Auth::user()->id, "Editou um contato {$request->company}(#{{$contact->id}})", request()->ip()]);
 

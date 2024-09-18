@@ -62,6 +62,7 @@ class PhoneCallService
     {
         try {
             $rules = [                
+                'user_id' => 'nullable|exists:users,id',
                 'company' => 'required|string|max:255',
                 'phone' => 'required|string|max:15',
                 'domain' => 'required|string|max:255',
@@ -78,7 +79,7 @@ class PhoneCallService
             }
 
             $data = $validator->validated();
-            $data['user_id'] = Auth::user()->id;
+            $data['user_id'] = $data['user_id'] ?? Auth::user()->id;
 
             $phoneCall = PhoneCall::create($data);
 
@@ -92,6 +93,7 @@ class PhoneCallService
     {
         try {
             $rules = [
+                'user_id' => 'nullable|exists:users,id',
                 'company' => 'required|string|max:255',
                 'phone' => 'required|string|max:15',
                 'domain' => 'required|string|max:255',
@@ -112,7 +114,7 @@ class PhoneCallService
             if (!$phoneCall) throw new Exception('Chamada telefônica não encontrada');
 
             $data = $validator->validated();
-            $data['user_id'] = Auth::user()->id;
+            $data['user_id'] = $data['user_id'] ?? Auth::user()->id;
 
             $phoneCall->update($data);
 
