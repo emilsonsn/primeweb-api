@@ -142,7 +142,11 @@ class ContactService
                 }
             }
 
-            Log::create([Auth::user()->id, "Cadastrou um contato {$request->company}(#{{$contact->id}})", request()->ip()]);
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'action' => "Cadastrou um contato {$request->company}(#{{$contact->id}})",
+                'ip' => request()->ip()
+            ]);
 
             return ['status' => true, 'data' => $contact];
         } catch (Exception $error) {
@@ -222,7 +226,11 @@ class ContactService
                 }
             });
 
-            Log::create([Auth::user()->id, "Editou um contato {$request->company}(#{{$contact->id}})", request()->ip()]);
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'action' => "Editou um contato {$request->company}(#{{$contact->id}})",
+                'ip' => request()->ip()
+            ]);
 
             return ['status' => true, 'data' => $contact];
         } catch (Exception $error) {
@@ -241,7 +249,11 @@ class ContactService
             $id = $contact->id;
             $contact->delete();
 
-            Log::create([Auth::user()->id, "Apagou o contato {$company}(#{{$id}})", request()->ip()]);
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'action' => "Apagou o contato {$company}(#{{$id}})",
+                'ip' => request()->ip()
+            ]);
 
             return ['status' => true];
         } catch (Exception $error) {
@@ -259,7 +271,11 @@ class ContactService
             $contact = $contactPhone->contact;
             $contactPhone->delete();
 
-            Log::create([Auth::user()->id, "Apagou o telefone do contato {$contact->company}(#{{$contact->id}})", request()->ip()]);
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'action' => "Apagou o telefone do contato {$contact->company}(#{{$contact->id}})",
+                'ip' => request()->ip()
+            ]);
 
             return ['status' => true];
         } catch (Exception $error) {
@@ -277,7 +293,11 @@ class ContactService
             $contact = $contactEmail->contact;
             $contactEmail->delete();
 
-            Log::create([Auth::user()->id, "Apagou o telefone do contato {$contact->company}(#{{$contact->id}})", request()->ip()]);
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'action' => "Apagou o telefone do contato {$contact->company}(#{{$contact->id}})",
+                'ip' => request()->ip()
+            ]);
 
             return ['status' => true];
         } catch (Exception $error) {
@@ -295,7 +315,11 @@ class ContactService
             $contact = $contactSegment->contact;
             $contactSegment->delete();
 
-            Log::create([Auth::user()->id, "Apagou o telefone do contato {$contact->company}(#{{$contact->id}})", request()->ip()]);
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'action' => "Apagou o telefone do contato {$contact->company}(#{{$contact->id}})",
+                'ip' => request()->ip()
+            ]);
 
             return ['status' => true];
         } catch (Exception $error) {
