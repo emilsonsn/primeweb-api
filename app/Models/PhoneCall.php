@@ -28,4 +28,8 @@ class PhoneCall extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public function occurrences(){
+        return $this->hasMany(Occurrence::class);
+    }
 }

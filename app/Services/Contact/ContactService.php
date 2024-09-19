@@ -30,7 +30,7 @@ class ContactService
     {
         try {
             $perPage = $request->input('take', 10);
-            $contacts = Contact::with(['phones', 'emails', 'segments']);
+            $contacts = Contact::with(['phones', 'emails', 'segments', 'occurrences']);
 
             $auth = Auth::user();
 

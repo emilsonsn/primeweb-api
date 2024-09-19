@@ -30,7 +30,7 @@ class PhoneCallService
             $domain = $request->domain;
             $phone = $request->phone;
 
-            $phoneCalls = PhoneCall::with(['user']);
+            $phoneCalls = PhoneCall::with(['user', 'occurrences']);
 
             $auth = Auth::user();
             $is_seller = $auth->role == RolesEnum::Seller->value;
