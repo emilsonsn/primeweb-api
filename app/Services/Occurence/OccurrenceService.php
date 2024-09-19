@@ -71,8 +71,8 @@ class OccurrenceService
                 'status' => 'required|in:Lead,PresentationVisit,ConvertedContact,SchedulingVisit,ReschedulingVisit,DelegationContact,InNegotiation,Closed,Lost',
                 'link' => 'nullable|url',
                 'observations' => 'nullable|string',
-                'phone_call_id' => 'nullable|interger',
-                'contact_id' => 'nullable|interger',
+                'phone_call_id' => 'nullable|integer',
+                'contact_id' => 'nullable|integer',
             ];
 
             $validator = Validator::make($request->all(), $rules);
