@@ -94,7 +94,11 @@ class UserService
 
             $user = User::create($requestData);
 
-            Log::create([Auth::user()->id, "Criou o usuário {$user->name} ({$user->id})", request()->ip()]);
+            Log::create([
+                "user_id" => Auth::user()->id,
+                "action" => "Criou o usuário {$user->name} ({$user->id})",
+                "ip" => request()->ip()
+            ]);
 
             Mail::to($user->email)->send(new WelcomeMail($user->name, $user->email, $password));
 
@@ -133,7 +137,11 @@ class UserService
 
             $userToUpdate->update($data);
 
-            Log::create([Auth::user()->id, "Editou o usuário {$userToUpdate->name} ({$userToUpdate->id})", request()->ip()]);
+            Log::create([
+                "user_id" => Auth::user()->id,
+                "action" => "Editou o usuário {$userToUpdate->name} ({$userToUpdate->id})",
+                "ip" => request()->ip()
+            ]);
 
             return ['status' => true, 'data' => $userToUpdate];
         } catch (Exception $error) {
@@ -154,7 +162,11 @@ class UserService
 
             $status = $user->is_active ? "Desbloqueou" : "Bloqueou";
             
-            Log::create([Auth::user()->id, "$status o usuário {$user->name} ({$user->id})", request()->ip()]);
+            Log::create([
+                "user_id" => Auth::user()->id,
+                "action" => "$status o usuário {$user->name} ({$user->id})",
+                "ip" => request()->ip()
+            ]);
 
             return ['status' => true, 'data' => $user];
         } catch (Exception $error) {
@@ -174,7 +186,11 @@ class UserService
 
             $user->delete();
 
-            Log::create([Auth::user()->id, "Deletou o usuário {$name} ({$id})", request()->ip()]);
+            Log::create([
+                "user_id" => Auth::user()->id,
+                "action" => "Deletou o usuário {$name} ({$id})",
+                "ip" => request()->ip()
+            ]);
 
             return ['status' => true, 'data' => $user];
         } catch (Exception $error) {
@@ -203,7 +219,11 @@ class UserService
 
             Mail::to($email)->send(new PasswordRecoveryMail($code));
 
-            Log::create([Auth::user()->id, "Solicitou troca de senha", request()->ip()]);
+            Log::create([
+                    "user_id" => Auth::user()->id,
+                    "action" => "Solicitou troca de senha",
+                    "ip" => request()->ip(),
+                ]);
 
             return ['status' => true, 'data' => $user];
 
@@ -226,7 +246,11 @@ class UserService
             $user->save();
             $recovery->delete();
 
-            Log::create([Auth::user()->id, "Trocou de senha", request()->ip()]);
+            Log::create([
+                "user_id" => Auth::user()->id,
+                "action" => "Trocou de senha",
+                "ip" => request()->ip()
+            ]);
 
             return ['status' => true, 'data' => $user];
         }catch(Exception $error) {
