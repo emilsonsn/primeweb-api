@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Occurence;
 
 use App\Enums\RolesEnum;
 use App\Mail\OccurrenceMail;

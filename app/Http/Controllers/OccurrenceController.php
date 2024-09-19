@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\OccurrenceService;
+use App\Services\Occurence\OccurrenceService;
 use Illuminate\Http\Request;
 
 class OccurrenceController extends Controller
