@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Log\NotificationService;
+use App\Services\Notification\NotificationService;
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller

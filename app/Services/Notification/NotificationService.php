@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Log;
+namespace App\Services\Notification;
 
 use App\Models\Log;
 use App\Models\Notification;
