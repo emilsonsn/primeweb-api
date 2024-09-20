@@ -40,6 +40,10 @@ class ContactService
                 $query->where('user_id', $auth->id);
             });
 
+            if(isset($request->date_from) && isset($request->date_to)){
+                $contacts->whereBetween('return_date',[$request->date_from, $request->data_to]);
+            }
+
             if ($request->filled('company')) {
                 $contacts->where('company', 'LIKE', "%{$request->company}%");
             }
