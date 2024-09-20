@@ -18,7 +18,7 @@ class ContactService
     public function all()
     {
         try {
-            $contacts = Contact::with(['phones', 'emails', 'segments'])->get();
+            $contacts = Contact::with(['phones', 'emails', 'segments', 'user'])->get();
 
             return ['status' => true, 'data' => $contacts];
         } catch (Exception $error) {
@@ -30,7 +30,7 @@ class ContactService
     {
         try {
             $perPage = $request->input('take', 10);
-            $contacts = Contact::with(['phones', 'emails', 'segments', 'occurrences']);
+            $contacts = Contact::with(['phones', 'emails', 'segments', 'occurrences', 'user']);
 
             $auth = Auth::user();
 
