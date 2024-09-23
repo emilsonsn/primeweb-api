@@ -32,7 +32,7 @@ class Occurrence extends Model
     }
 
     public function contact(){
-        return $this->belongsTo(Contact::class)->with('emails');
+        return $this->belongsTo(Contact::class)->with(['emails', 'phones']);
     }
 
     public function phone_call(){
