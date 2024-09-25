@@ -23,9 +23,6 @@ use App\Http\Middleware\AdminMiddleware;
 */
 
 Route::post('login', [AuthController::class, 'login']);
-Route::get('teste', function(){
-    return view('emails.occurrence');
-});
 
 Route::get('validateToken', [AuthController::class, 'validateToken']);
 Route::post('recoverPassword', [UserController::class, 'passwordRecovery']);
@@ -83,6 +80,7 @@ Route::middleware('jwt')->group(function(){
         Route::get('all', [OccurrenceController::class, 'all']);
         Route::get('search', [OccurrenceController::class, 'search']);
         Route::post('create', [OccurrenceController::class, 'create']);
+        Route::post('resend-email/{id}', [OccurrenceController::class, 'resendEmail']);        
         Route::patch('{id}', [OccurrenceController::class, 'update']);
         Route::delete('{id}', [OccurrenceController::class, 'delete']);
     }); 

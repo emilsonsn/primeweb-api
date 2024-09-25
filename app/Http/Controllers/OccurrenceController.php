@@ -32,6 +32,15 @@ class OccurrenceController extends Controller
         return $this->response($result);
     }
 
+    public function resendEmail(int $id){
+        $result = $this->occurrenceService->resendEmail($id);
+
+        if($result['status']) $result['message'] = "Email reenviado com sucesso";
+        return $this->response($result);
+    }
+
+    
+
     public function update(Request $request, $id){
         $result = $this->occurrenceService->update($request, $id);
 

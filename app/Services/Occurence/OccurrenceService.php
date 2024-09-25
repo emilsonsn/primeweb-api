@@ -43,7 +43,8 @@ class OccurrenceService
             }
 
             if ($request->filled('status')) {
-                $occurrences->where('status', $request->status);
+                $status = explode(',', $request->status);
+                $occurrences->whereIn('status', $status);
             }
 
             if ($request->filled('date')) {
@@ -115,6 +116,35 @@ class OccurrenceService
             return ['status' => true, 'data' => $occurrence];
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
+        }
+    }
+
+    public function resendEmail($id){
+        try{
+            $occurrence = Occurrence::find($id);
+    
+            if(!isset($occurrence)) throw new Exception ("Ocorrência não encontrada");
+    
+            $phone = $occurrence->contact->user->phone;
+            $clientName = $occurrence->contact->company;
+            $url = $occurrence->link;
+            $date = $occurrence->date;
+            $time = $occurrence->time;
+
+            foreach($occurrence->contact->emails as $email){
+                Mail::to($email)->send(new OccurrenceMail(
+                    $phone,
+                    $clientName,
+                    $url,
+                    $date,
+                    $time
+                ));
+            }
+
+            return ['status' => true, 'data' => $occurrence];
+            
+        }catch(Exception $error){
+            return ["status" => false, "data" => $error->getMessage()];
         }
     }
 
