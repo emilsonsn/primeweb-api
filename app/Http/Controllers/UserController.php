@@ -21,7 +21,7 @@ class UserController extends Controller
 
     public function search(Request $request){
         $result = $this->userService->search($request);
-
+                
         return $result;
     }
 

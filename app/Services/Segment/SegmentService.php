@@ -66,7 +66,11 @@ class SegmentService
 
             $segment = Segment::create($data);
 
-            Log::create([Auth::user()->id, "Criou o segmento {$segment->name} ($segment->id)", request()->ip()]);
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'ip' => request()->ip(),
+                'action' => "Criou o segmento {$segment->name} ($segment->id)"
+            ]);
 
             return ['status' => true, 'data' => $segment];
         } catch (Exception $error) {
@@ -94,7 +98,11 @@ class SegmentService
 
             $segment->update($validator->validated());
 
-            Log::create([Auth::user()->id, "Editou o segmento {$segment->name} ($segment->id)", request()->ip()]);
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'action' => "Editou o segmento {$segment->name} ($segment->id)",
+                'ip' => request()->ip()
+            ]);
 
             return ['status' => true, 'data' => $segment];
         } catch (Exception $error) {
@@ -114,7 +122,11 @@ class SegmentService
             
             $segment->delete();
 
-            Log::create([Auth::user()->id, "Editou o segmento {$name} ($id)", request()->ip()]);
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'action' => "Editou o segmento {$name} ($id)",
+                'ip' => request()->ip()
+            ]);
 
             return ['status' => true];
         } catch (Exception $error) {
