@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OccurrenceController;
@@ -35,6 +36,10 @@ Route::middleware('jwt')->group(function(){
 
     Route::middleware(AdminMiddleware::class)->group(function() {
         // Middleware do admin
+    });
+
+    Route::prefix('dashboard')->group(function() {
+        Route::get('cards', [DashboardController::class, 'cards']);
     });
 
     Route::post('logout', [AuthController::class, 'logout']);

@@ -40,7 +40,11 @@ class PhoneCallService
             });
 
             if(isset($request->date_from) && isset($request->date_to)){
-                $phoneCalls->whereBetween('return_date',[$request->date_from, $request->data_to]);
+                if($request->date_from === $request->date_to){
+                    $phoneCalls->whereDate('return_date', $request->date_from);
+                }else{
+                    $phoneCalls->whereBetween('return_date',[$request->date_from, $request->data_to]);
+                }
             }
 
             if (isset($company)) {

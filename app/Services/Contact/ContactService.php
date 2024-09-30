@@ -41,7 +41,11 @@ class ContactService
             });
 
             if(isset($request->date_from) && isset($request->date_to)){
-                $contacts->whereBetween('return_date',[$request->date_from, $request->data_to]);
+                if($request->date_from === $request->date_to){
+                    $contacts->whereDate('return_date', $request->date_from);
+                }else{
+                    $contacts->whereBetween('return_date',[$request->date_from, $request->data_to]);
+                }
             }
 
             if ($request->filled('company')) {

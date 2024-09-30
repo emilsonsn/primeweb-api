@@ -112,7 +112,6 @@ class OccurrenceService
                 }
             }
 
-
             return ['status' => true, 'data' => $occurrence];
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
