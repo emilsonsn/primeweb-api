@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ClientEmail extends Model
+class ClientStatus extends Model
 {
     use HasFactory;
 
@@ -13,8 +13,8 @@ class ClientEmail extends Model
     const UPDATED_AT = 'updated_at';
 
     protected $fillable = [
-        'name',
-        'email',
+        'status',
+        'date',
         'client_id'
     ];
 
@@ -22,4 +22,5 @@ class ClientEmail extends Model
     {
         return $this->belongsTo(Client::class);
     }
+
 }

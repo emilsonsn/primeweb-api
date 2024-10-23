@@ -32,6 +32,13 @@ class ClientController extends Controller
         return $this->response($result);
     }
 
+    public function changeStatus(Request $request){
+        $result = $this->clientService->changeStatus($request);
+
+        if($result['status']) $result['message'] = "Status atualizado com sucesso";
+        return $this->response($result);
+    }
+    
     public function update(Request $request, $id){
         $result = $this->clientService->update($request, $id);
 

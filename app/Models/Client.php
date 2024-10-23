@@ -9,6 +9,9 @@ class Client extends Model
 {
     use HasFactory;
 
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'updated_at';
+
     protected $fillable = [
         'company',
         'domain',

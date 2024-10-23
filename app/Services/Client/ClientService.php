@@ -2,11 +2,14 @@
 
 namespace App\Services\Client;
 
+use App\Enums\ClientStatusEnum;
 use App\Models\Log;
 use App\Models\Client;
 use App\Models\ClientContract;
 use App\Models\ClientEmail;
 use App\Models\ClientPhone;
+use App\Models\ClientStatus;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -108,6 +111,12 @@ class ClientService
                 }
             }
 
+            $client['clientStatus'] = ClientStatus::create([
+                'status' => ClientStatusEnum::IN_PROGRESS->value,
+                'date' => Carbon::now(),
+                'client_id' => $client->id
+            ]);
+
             Log::create([
                 'user_id' => Auth::user()->id,
                 'ip' => request()->ip(),
@@ -115,6 +124,38 @@ class ClientService
             ]);
 
             return ['status' => true, 'data' => $client];
+        } catch (Exception $error) {
+            return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
+        }
+    }
+
+    public function changeStatus($request)
+    {
+        try {
+            $rules = [
+                'client_id' => 'required|exists:clients,id',
+                'status' => ['required', 'in:' . implode(',', array_column(ClientStatusEnum::cases(), 'value'))],
+                'date' => 'nullable|date',
+            ];
+    
+            $validator = Validator::make($request->all(), $rules);
+    
+            if ($validator->fails()) {
+                return ['status' => false, 'error' => $validator->errors(), 'statusCode' => 400];
+            }
+    
+            $client = Client::find($request->client_id);
+    
+            if (!isset($client)) throw new Exception('Cliente não encontrado');
+    
+            $clientStatus = ClientStatus::create([
+                'status' => $request->status,
+                'date' => $request->date ?? Carbon::now(),
+                'client_id' => $client->id
+            ]);
+    
+            return ['status' => true, "data" => $clientStatus];
+    
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
         }

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ClientWordKeyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LogController;
@@ -104,6 +105,7 @@ Route::middleware('jwt')->group(function(){
         Route::get('all', [ClientController::class, 'all']);
         Route::get('search', [ClientController::class, 'search']);
         Route::post('create', [ClientController::class, 'create']);
+        Route::post('change-status', [ClientController::class, 'changeStatus']);    
         Route::patch('{id}', [ClientController::class, 'update']);
         Route::delete('{id}', [ClientController::class, 'delete']);
 
@@ -112,5 +114,12 @@ Route::middleware('jwt')->group(function(){
 
         Route::delete('email/{email_id}', [ClientController::class, 'deleteEmail']);
         Route::delete('phone/{phone_id}', [ClientController::class, 'deletePhone']);
+    });
+
+    Route::prefix('client-word-key')->group(function() {
+        Route::get('all', [ClientWordKeyController::class, 'all']);
+        Route::get('search', [ClientWordKeyController::class, 'search']);
+        Route::post('create', [ClientWordKeyController::class, 'create']);
+        Route::delete('{id}', [ClientWordKeyController::class, 'delete']);
     });
 });
