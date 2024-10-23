@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LogController;
@@ -98,4 +99,18 @@ Route::middleware('jwt')->group(function(){
         Route::get('search', [NotificationController::class, 'search']);
         Route::post('see', [NotificationController::class, 'see']);
     }); 
+
+    Route::prefix('client')->group(function(){
+        Route::get('all', [ClientController::class, 'all']);
+        Route::get('search', [ClientController::class, 'search']);
+        Route::post('create', [ClientController::class, 'create']);
+        Route::patch('{id}', [ClientController::class, 'update']);
+        Route::delete('{id}', [ClientController::class, 'delete']);
+
+        Route::post('{id}/add-contract', [ClientController::class, 'addContract']);
+        Route::delete('contract/{contract_id}', [ClientController::class, 'deleteContract']);
+
+        Route::delete('email/{email_id}', [ClientController::class, 'deleteEmail']);
+        Route::delete('phone/{phone_id}', [ClientController::class, 'deletePhone']);
+    });
 });
