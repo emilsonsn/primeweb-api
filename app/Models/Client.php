@@ -12,6 +12,9 @@ class Client extends Model
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
+    public $table = 'clients';
+
+
     protected $fillable = [
         'company',
         'domain',

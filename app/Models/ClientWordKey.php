@@ -12,6 +12,8 @@ class ClientWordKey extends Model
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
+    public $table = 'client_word_keys';
+
     protected $fillable = [
         'word_key',
         'user_id',

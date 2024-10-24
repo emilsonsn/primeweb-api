@@ -12,6 +12,8 @@ class ClientContract extends Model
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
+    public $table = 'client_contracts';
+
     protected $fillable = [
         'number',
         'path',
