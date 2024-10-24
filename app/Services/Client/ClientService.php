@@ -197,6 +197,32 @@ class ClientService
 
             $client->update($validator->validated());
 
+            if(isset($request->emails) && count($request->emails)){
+                foreach($request->emails as $emailData){
+                    ClientEmail::updateOrCreate(
+                    [
+                        'id' => $emailData['id'],
+                    ], [
+                        'name' => $emailData['name'],
+                        'email' => $emailData['email'],
+                        'client_id' => $client->id
+                    ]);
+                }
+            }
+
+            if(isset($request->phones) && count($request->phones)){
+                foreach($request->phones as $phoneData){
+                    ClientPhone::updateOrCreate(
+                    [
+                        'id' => $phoneData['id'],
+                    ], [
+                        'name' => $phoneData['name'],
+                        'phone' => $phoneData['phone'],
+                        'client_id' => $client->id
+                    ]);
+                }
+            }
+
             Log::create([
                 'user_id' => Auth::user()->id,
                 'action' => "Editou o cliente {$client->company} ($client->id)",

@@ -31,7 +31,6 @@ Route::get('validateToken', [AuthController::class, 'validateToken']);
 Route::post('recoverPassword', [UserController::class, 'passwordRecovery']);
 Route::post('updatePassword', [UserController::class, 'updatePassword']);
 
-
 Route::get('validateToken', [AuthController::class, 'validateToken']);
 
 Route::middleware('jwt')->group(function(){
