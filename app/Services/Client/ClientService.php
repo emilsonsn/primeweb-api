@@ -182,6 +182,7 @@ class ClientService
                 'consultant_id' => 'required|exists:users,id',
                 'seller_id' => 'required|exists:users,id',
                 'technical_id' => 'required|exists:users,id',
+                'observations' => 'required|string',
             ];
 
             $validator = Validator::make($request->all(), $rules);
