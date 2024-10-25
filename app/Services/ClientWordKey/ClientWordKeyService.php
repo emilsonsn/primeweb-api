@@ -38,7 +38,7 @@ class ClientWordKeyService
                 $clientWordKeys->where('client_id', $client_id);
             }
 
-            $clientWordKeys->paginate($perPage);
+            $clientWordKeys = $clientWordKeys->paginate($perPage);
 
             return ['status' => true, 'data' => $clientWordKeys];
         } catch (Exception $error) {
