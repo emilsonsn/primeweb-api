@@ -22,7 +22,7 @@ class ClientController extends Controller
     public function getById($id){
         $result = $this->clientService->getById($id);
 
-        return $result;
+        return $this->response($result);
     }
 
     public function search(Request $request){

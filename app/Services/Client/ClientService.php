@@ -42,7 +42,7 @@ class ClientService
                 'status'
             ])->find($id);
 
-            return $clients;
+            return ['status' => true, 'data' => $clients];
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
         }
