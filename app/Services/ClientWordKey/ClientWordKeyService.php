@@ -40,7 +40,7 @@ class ClientWordKeyService
 
             $clientWordKeys = $clientWordKeys->paginate($perPage);
 
-            return ['status' => true, 'data' => $clientWordKeys];
+            return $clientWordKeys;
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
         }
