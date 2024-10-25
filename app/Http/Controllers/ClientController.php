@@ -19,8 +19,8 @@ class ClientController extends Controller
         return $this->response($result);
     }
 
-    public function getById(Request $request){
-        $result = $this->clientService->getById($request);
+    public function getById($id){
+        $result = $this->clientService->getById($id);
 
         return $result;
     }
