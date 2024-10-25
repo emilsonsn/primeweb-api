@@ -28,6 +28,25 @@ class ClientService
         }
     }
 
+    public function getById($id)
+    {
+        try {
+            $clients = Client::with([
+                'segment',
+                'consultant',
+                'seller',
+                'technical',
+                'emails',
+                'phones',
+                'contracts'
+            ])->find($id);
+
+            return ['status' => true, 'data' => $clients];
+        } catch (Exception $error) {
+            return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
+        }
+    }
+
     public function search($request)
     {
         try {

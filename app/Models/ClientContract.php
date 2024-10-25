@@ -25,6 +25,13 @@ class ClientContract extends Model
         'client_id'
     ];
 
+    // Atributo path retornando url completa com a baseurl
+    public function getPathAttribute($value){
+        if($value){
+            return url('storage/'. $value);
+        }
+    }
+
     public function client()
     {
         return $this->belongsTo(Client::class);
