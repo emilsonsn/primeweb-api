@@ -102,6 +102,7 @@ Route::middleware('jwt')->group(function(){
 
     Route::prefix('client')->group(function(){
         Route::get('all', [ClientController::class, 'all']);
+        Route::get('{id}', [ClientController::class, 'getById']);    
         Route::get('search', [ClientController::class, 'search']);
         Route::post('create', [ClientController::class, 'create']);
         Route::post('change-status', [ClientController::class, 'changeStatus']);    

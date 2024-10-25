@@ -38,10 +38,11 @@ class ClientService
                 'technical',
                 'emails',
                 'phones',
-                'contracts'
+                'contracts',
+                'status'
             ])->find($id);
 
-            return ['status' => true, 'data' => $clients];
+            return $clients;
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
         }
@@ -54,7 +55,16 @@ class ClientService
             $company = $request->company;
             $status = $request->status;
 
-            $clients = Client::with(['segment', 'consultant', 'seller', 'technical', 'emails', 'phones', 'contracts']);
+            $clients = Client::with([
+                'segment',
+                'consultant',
+                'seller',
+                'technical',
+                'emails',
+                'phones',
+                'contracts',
+                'status'
+            ]);
 
             if (isset($company)) {
                 $clients->where('company', 'LIKE', "%{$company}%");

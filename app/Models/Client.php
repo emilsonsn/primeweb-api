@@ -71,4 +71,8 @@ class Client extends Model
     {
         return $this->hasMany(ClientContract::class);
     }
+
+    public function status(){
+        return $this->belongsTo(ClientStatus::class);
+    }
 }
