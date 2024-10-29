@@ -52,9 +52,7 @@ class ClientService
     {
         try {
             $perPage = $request->input('take', 10);
-            $company = $request->company;
-            $status = $request->status;
-
+    
             $clients = Client::with([
                 'segment',
                 'consultant',
@@ -65,28 +63,56 @@ class ClientService
                 'contracts',
                 'status'
             ]);
-
-            if (isset($company)) {
-                $clients->where('company', 'LIKE', "%{$company}%");
+    
+            $auth = Auth::user();
+    
+            if ($auth->role == 'Seller') {
+                $clients->where('seller_id', $auth->id);
             }
-
-            if (isset($status)) {
-                $clients->where('status', $status);
+    
+            if ($auth->role == 'Technical') {
+                $clients->where('technical_id', $auth->id);
             }
-
+    
+            if ($auth->role == 'Consultant') {
+                $clients->where('consultant_id', $auth->id);
+            }
+    
+            if ($request->filled('company')) {
+                $clients->where('company', 'LIKE', "%{$request->company}%");
+            }
+    
+            if ($request->filled('segment_id')) {
+                $clients->where('segment_id', $request->segment_id);
+            }
+    
+            if ($request->filled('technical_id')) {
+                $clients->where('technical_id', $request->technical_id);
+            }
+    
+            if ($request->filled('domain')) {
+                $clients->where('domain', 'LIKE', "%{$request->domain}%");
+            }
+    
+            if ($request->filled('status')) {
+                $clients->where('status', $request->status);
+            }
+    
             $clients = $clients->paginate($perPage);
-
+    
             return $clients;
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
         }
-    }
+    }    
 
     public function create($request)
     {
         try {
             $rules = [
                 'company' => 'required|string|max:255',
+                'client_responsable_name' => 'required|string|max:255',
+                'client_responsable_name_2' => 'required|string|max:255',
                 'domain' => 'required|string|max:255',
                 'cnpj' => 'required|string|max:14',
                 'cep' => 'required|string|max:9',
@@ -195,6 +221,8 @@ class ClientService
     {
         try {
             $rules = [
+                'client_responsable_name' => 'required|string|max:255',
+                'client_responsable_name_2' => 'required|string|max:255',
                 'company' => 'required|string|max:255',
                 'domain' => 'required|string|max:255',
                 'cnpj' => 'required|string|max:14',
