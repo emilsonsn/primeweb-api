@@ -18,7 +18,8 @@ return new class extends Migration
                 'Manager',
                 'Admin',
                 'Technical',
-                'Financial'
+                'Financial',
+                'Copywriter'
             ])->change();
         });
     }
