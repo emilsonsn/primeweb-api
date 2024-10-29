@@ -14,7 +14,6 @@ class Client extends Model
 
     public $table = 'clients';
 
-
     protected $fillable = [
         'company',
         'domain',
@@ -72,7 +71,8 @@ class Client extends Model
         return $this->hasMany(ClientContract::class);
     }
 
-    public function status(){
-        return $this->belongsTo(ClientStatus::class);
-    }
+    public function status()
+    {
+        return $this->hasOne(ClientStatus::class)->latestOfMany();
+    }    
 }

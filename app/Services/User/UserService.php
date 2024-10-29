@@ -76,7 +76,7 @@ class UserService
                 'email' => 'required|string|email|max:255|unique:users',
                 'phone' => 'required|string|max:255',
                 'password' => 'nullable|string|min:8',
-                'role' => 'nullable|string|in:Seller,Consultant,Manager,Admin'
+                'role' => 'nullable|string|in:Seller,Consultant,Manager,Admin,Technical.Financial'
             ];
 
             $password = str_shuffle(Str::upper(Str::random(1)) . rand(0, 9) . Str::random(1, '?!@#$%^&*') . Str::random(5));
@@ -118,8 +118,7 @@ class UserService
                 'email' => 'required|string|email|max:255|unique:users,email,' . $user_id,
                 'phone' => 'required|string|max:255',
                 'password' => 'nullable|string|min:8',
-                'role' => 'nullable|string|in:Seller,Consultant,Manager,Admin'
-            ];
+                'role' => 'nullable|string|in:Seller,Consultant,Manager,Admin,Technical.Financial'            ];
 
             $validator = Validator::make($request->all(), $rules);
 

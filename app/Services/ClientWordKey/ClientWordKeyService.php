@@ -18,7 +18,7 @@ class ClientWordKeyService
     public function all()
     {
         try {
-            $clientWordKeys = ClientWordKey::with(['client']);
+            $clientWordKeys = ClientWordKey::with(['client', 'user']);
 
             return ['status' => true, 'data' => $clientWordKeys];
         } catch (Exception $error) {
@@ -32,7 +32,7 @@ class ClientWordKeyService
             $perPage = $request->input('take', 10);
             $client_id = $request->client_id;
 
-            $clientWordKeys = ClientWordKey::with(['client']);
+            $clientWordKeys = ClientWordKey::with(['client', 'user']);
 
             if (isset($client_id)) {
                 $clientWordKeys->where('client_id', $client_id);
