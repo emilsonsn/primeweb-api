@@ -33,13 +33,22 @@ class UserService
     {
         try {
             $perPage = $request->input('take', 10);
-            $search_term = $request->search_term;
+            $name = $request->name;
+            $email = $request->email;
+            $status = isset($request->status) ? ($request->status == 'Active' ? true : false) : null;
 
             $users = User::query();
 
-            if(isset($search_term)){
-                $users->where('name', 'LIKE', "%{$search_term}%")
-                    ->orWhere('email', 'LIKE', "%{$search_term}%");
+            if(isset($name)){
+                $users->where('name', 'LIKE', "%{$name}%");
+            }
+
+            if(isset($email)){
+                $users->where('email', 'LIKE', "%{$email}%");
+            }
+
+            if(isset($status)){
+                $users->where('is_active', $status);
             }
 
             $users = $users->paginate($perPage);
