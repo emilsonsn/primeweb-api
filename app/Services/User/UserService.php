@@ -209,7 +209,8 @@ class UserService
 
             $recovery = PasswordRecover::create([
                 'code' => $code,
-                'user_id' => $user->id
+                'user_id' => $user->id,
+                'is_active' => true
             ]);
 
             if (!$recovery) {
@@ -219,7 +220,7 @@ class UserService
             Mail::to($email)->send(new PasswordRecoveryMail($code));
 
             Log::create([
-                    "user_id" => Auth::user()->id,
+                    "user_id" => $user->id,
                     "action" => "Solicitou troca de senha",
                     "ip" => request()->ip(),
                 ]);
@@ -236,17 +237,21 @@ class UserService
             $code = $request->code;
             $password = $request->password;
 
-            $recovery = PasswordRecover::orderBy('id', 'desc')->where('code', $code)->first();
+            $recovery = PasswordRecover::orderBy('id', 'desc')
+                ->where('code', $code)
+                ->where('is_active', true)
+                ->first();
 
-            if(!$recovery) throw new Exception('Código enviado não é válido.');
+            if(!isset($recovery)) throw new Exception('Código enviado não é válido.');
 
             $user = User::find($recovery->user_id);
             $user->password = Hash::make($password);
             $user->save();
-            $recovery->delete();
+            $recovery->is_active = false;
+            $recovery->save();
 
             Log::create([
-                "user_id" => Auth::user()->id,
+                "user_id" => $user->id,
                 "action" => "Trocou de senha",
                 "ip" => request()->ip()
             ]);

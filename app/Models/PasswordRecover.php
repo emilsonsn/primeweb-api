@@ -16,6 +16,7 @@ class PasswordRecover extends Model
 
     public $fillable= [
         'code',
+        'is_active',
         'user_id',
     ];
 
