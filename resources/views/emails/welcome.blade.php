@@ -66,7 +66,7 @@
         <p>
             <a href="{{ env('FRONT_URL') . '/login' }}">Clique aqui para fazer login</a></p>
         <div class="footer">
-            <p>© {{ date('Y') }} Andrade Engenharia. Todos os direitos reservados.</p>
+            <p>© {{ date('Y') }} Primeweb. Todos os direitos reservados.</p>
         </div>
     </div>
 </body>

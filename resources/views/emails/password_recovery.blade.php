@@ -63,7 +63,7 @@
         </p>
         <p>Se você não solicitou essa recuperação, por favor ignore este e-mail.</p>
         <div class="footer">
-            <p>© {{ date('Y') }} Andrade Engenharia. Todos os direitos reservados.</p>
+            <p>© {{ date('Y') }} Primeweb. Todos os direitos reservados.</p>
         </div>
     </div>
 </body>
