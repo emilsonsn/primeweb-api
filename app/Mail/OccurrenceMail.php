@@ -43,7 +43,7 @@ class OccurrenceMail extends Mailable
                         'date' => $this->date,
                         'time' => $this->time,
                     ])
-                    ->subject('Primeweb - Ocorrência');
+                    ->subject('Prime Web - Ocorrência');
     }
 
 }
