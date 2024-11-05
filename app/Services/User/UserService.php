@@ -84,8 +84,13 @@ class UserService
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
                 'phone' => 'required|string|max:255',
+                'cep' => 'nullable|string|max:255',
+                'street' => 'nullable|string|max:255',
+                'neighborhood' => 'nullable|string|max:255',
+                'city' => 'nullable|string|max:255',
+                'state' => 'nullable|string|max:255',
                 'password' => 'nullable|string|min:8',
-                'role' => 'nullable|string|in:Seller,Consultant,CommercialManager,TechnicalManager,Admin,Technical,Financial,Copywriter'
+                'role' => 'nullable|string|in:Seller,Consultant,CommercialManager,TechnicalManager,Admin,Technical,Financial,Copywriter',
             ];
 
             $password = str_shuffle(Str::upper(Str::random(1)) . rand(0, 9) . Str::random(1, '?!@#$%^&*') . Str::random(5));
@@ -126,6 +131,11 @@ class UserService
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users,email,' . $user_id,
                 'phone' => 'required|string|max:255',
+                'cep' => 'nullable|string|max:255',
+                'street' => 'nullable|string|max:255',
+                'neighborhood' => 'nullable|string|max:255',
+                'city' => 'nullable|string|max:255',
+                'state' => 'nullable|string|max:255',
                 'password' => 'nullable|string|min:8',
                 'role' => 'nullable|string|in:Seller,Consultant,CommercialManager,TechnicalManager,Admin,Technical,Financial,Copywriter'];
 
