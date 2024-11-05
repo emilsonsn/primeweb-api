@@ -29,7 +29,7 @@
             font-size: 16px;
             margin-bottom: 20px;
         }
-        a {
+        p .linkB {
             display: inline-block;
             background-color: #0044cc;
             color: #fff;
@@ -38,7 +38,8 @@
             border-radius: 4px;
             font-size: 16px;
         }
-        a:hover {
+        p .linkB:hover {
+            color: #fff;
             background-color: #003399;
         }
         .footer {
@@ -55,7 +56,11 @@
         <h1>Recuperação de Senha</h1>
         <p>Olá,</p>
         <p>Você solicitou a recuperação de senha. Use o botão abaixo para redefinir sua senha:</p>
-        <p><a href="{{env('FRONT_URL') . '/password_recovery?code=' . $code }}">Recuperar Senha</a></p>
+        <p>
+            <a class="linkB" href="{{env('FRONT_URL') . '/password_recovery?code=' . $code }}">
+                Recuperar Senha
+            </a>
+        </p>
         <p>Se você não solicitou essa recuperação, por favor ignore este e-mail.</p>
         <div class="footer">
             <p>© {{ date('Y') }} Andrade Engenharia. Todos os direitos reservados.</p>
