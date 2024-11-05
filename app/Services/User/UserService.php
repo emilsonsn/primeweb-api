@@ -234,7 +234,8 @@ class UserService
 
     public function updatePassword($request){
         try{
-            $code = $request->code;
+            $code = $request->code ?? '';
+            $code = preg_replace('/[^a-zA-Z0-9]/', '', $request->code);
             $password = $request->password;
 
             $recovery = PasswordRecover::orderBy('id', 'desc')
