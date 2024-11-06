@@ -204,6 +204,10 @@ class UserService
             $name = $user->name;
             $id = $user->id;
 
+            if($user->contacts()->count()){
+                throw new Exception('Usuário não pode ser deletado pois está vinculado à contatos');
+            }
+
             $user->delete();
 
             Log::create([
