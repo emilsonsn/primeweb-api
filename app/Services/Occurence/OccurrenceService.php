@@ -29,7 +29,7 @@ class OccurrenceService
         try {
             $perPage = $request->input('take', 10);
 
-            $occurrences = Occurrence::with(['user', 'contact', 'phone_call']);
+            $occurrences = Occurrence::orderBy('id', 'desc')->with(['user', 'contact', 'phone_call']);
 
             $auth = Auth::user();
             $is_seller = $auth->role == RolesEnum::Seller->value;

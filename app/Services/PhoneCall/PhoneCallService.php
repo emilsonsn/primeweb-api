@@ -30,7 +30,7 @@ class PhoneCallService
             $domain = $request->domain;
             $phone = $request->phone;
 
-            $phoneCalls = PhoneCall::with(['user', 'occurrences']);
+            $phoneCalls = PhoneCall::orderBy('id', 'desc')->with(['user', 'occurrences']);
 
             $auth = Auth::user();
             $is_seller = $auth->role == RolesEnum::Seller->value;
@@ -43,7 +43,7 @@ class PhoneCallService
                 if($request->date_from === $request->date_to){
                     $phoneCalls->whereDate('return_date', $request->date_from);
                 }else{
-                    $phoneCalls->whereBetween('return_date',[$request->date_from, $request->data_to]);
+                    $phoneCalls->whereBetween('return_date',[$request->date_from, $request->date_to]);
                 }
             }
 

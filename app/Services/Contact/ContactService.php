@@ -30,7 +30,14 @@ class ContactService
     {
         try {
             $perPage = $request->input('take', 10);
-            $contacts = Contact::with(['phones', 'emails', 'segments', 'occurrences', 'user']);
+            $contacts = Contact::orderBy('id', 'desc')
+                ->with([
+                    'phones',
+                    'emails',
+                    'segments',
+                    'occurrences',
+                    'user'
+                ]);
 
             $auth = Auth::user();
 
@@ -44,7 +51,7 @@ class ContactService
                 if($request->date_from === $request->date_to){
                     $contacts->whereDate('return_date', $request->date_from);
                 }else{
-                    $contacts->whereBetween('return_date',[$request->date_from, $request->data_to]);
+                    $contacts->whereBetween('return_date',[$request->date_from, $request->date_to]);
                 }
             }
 
