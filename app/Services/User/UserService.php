@@ -2,7 +2,6 @@
 
 namespace App\Services\User;
 
-use App\Models\PasswordRecovery;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Hash;
@@ -17,7 +16,6 @@ use Illuminate\Support\Str;
 
 class UserService
 {
-
     public function all()
     {
         try {
@@ -123,7 +121,6 @@ class UserService
         }
     }
 
-
     public function update($request, $user_id)
     {
         try {
@@ -168,7 +165,6 @@ class UserService
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
         }
     }
-
 
     public function userBlock($user_id)
     {
@@ -287,5 +283,4 @@ class UserService
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
         }
     }
-
 }
