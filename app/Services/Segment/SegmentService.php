@@ -15,7 +15,7 @@ class SegmentService
         try {
             $segments = Segment::with(['user']);
 
-            return ['status' => true, 'data' => $segments];
+            return ['status' => true, 'data' => $segments->get()];
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
         }
