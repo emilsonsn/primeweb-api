@@ -8,6 +8,8 @@ use App\Models\ContactPhone;
 use App\Models\ContactEmail;
 use App\Models\ContactSegment;
 use App\Models\Log;
+use App\Models\Occurrence;
+use App\Models\PhoneCall;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -30,14 +32,14 @@ class ContactService
     {
         try {
             $perPage = $request->input('take', 10);
-            $contacts = Contact::orderBy('id', 'desc')
-                ->with([
+            $contacts = Contact::
+                with([
                     'phones',
                     'emails',
                     'segments',
                     'occurrences',
                     'user'
-                ]);
+                ])->orderBy('id', 'desc');
 
             $auth = Auth::user();
 
@@ -114,6 +116,7 @@ class ContactService
                 'phones' => 'array',
                 'emails' => 'array',
                 'segments' => 'array',
+                'phone_call_id' => 'nullable|integer',
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -155,6 +158,16 @@ class ContactService
                         'contact_id' => $contact->id
                     ]);
                 }
+            }
+
+            if(isset($request->phone_call_id)){
+                $phone_call_id = $request->phone_call_id;
+                Occurrence::where('phone_call_id', $phone_call_id)
+                    ->update([
+                        'contact_id' => $contact->id,                        
+                    ]);
+
+                PhoneCall::find($phone_call_id)->delete();
             }
 
             Log::create([
