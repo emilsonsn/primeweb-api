@@ -39,7 +39,13 @@ class OccurrenceService
             });
 
             if($request->is_calendar){
-                $occurrences->whereIn('status', ['PresentationVisit','SchedulingVisit','ReschedulingVisit']);
+                $occurrences->whereIn('status', [
+                    'PresentationVisit',
+                    'SchedulingVisit',
+                    'ReschedulingVisit',
+                    'MeetingScheduling',
+                    'Meetingrescheduling',
+                ]);
             }
 
             if ($request->filled('status')) {
@@ -69,7 +75,7 @@ class OccurrenceService
             $rules = [
                 'date' => 'required|date',
                 'time' => 'required',
-                'status' => 'required|in:Lead,PresentationVisit,ConvertedContact,SchedulingVisit,ReschedulingVisit,DelegationContact,InNegotiation,Closed,Lost',
+                'status' => 'required|in:Lead,PresentationVisit,ConvertedContact,MeetingScheduling,Meetingrescheduling,SchedulingVisit,ReschedulingVisit,DelegationContact,InNegotiation,Closed,Lost',
                 'link' => 'nullable|url',
                 'observations' => 'nullable|string',
                 'phone_call_id' => 'nullable|integer',
@@ -156,10 +162,10 @@ class OccurrenceService
             $rules = [                
                 'date' => 'date',
                 'time' => 'nullable',
-                'status' => 'required|in:Lead,PresentationVisit,ConvertedContact,SchedulingVisit,ReschedulingVisit,DelegationContact,InNegotiation,Closed,Lost',
+                'status' => 'required|in:Lead,PresentationVisit,ConvertedContact,MeetingScheduling,Meetingrescheduling,SchedulingVisit,ReschedulingVisit,DelegationContact,InNegotiation,Closed,Lost',
                 'link' => 'nullable|url',
                 'observations' => 'nullable|string'
-            ];
+            ];            
 
             $validator = Validator::make($request->all(), $rules);
 

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::table('occurrences', function (Blueprint $table) {            
             $table->enum('status', ['Lead', 'PresentationVisit', 'ConvertedContact', 'SchedulingVisit', 'ReschedulingVisit', 'DelegationContact', 'InNegotiation', 'Closed', 'Lost'])->change();
-
         });
     }
 
