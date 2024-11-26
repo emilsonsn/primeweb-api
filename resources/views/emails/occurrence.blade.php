@@ -45,7 +45,7 @@
                         <td style="padding: 20px; text-align: center; border-top: 2px dashed #ccc;">
                             <p>Segue link para reunião conforme combinado para data de {{ Carbon::createFromFormat('Y-m-d H:i', $date . ' ' . $time)->format('d/m/Y H:i:s') }}</p>
                             <a href="{{ $url }}" style="display: inline-block; margin: 20px 0; padding: 10px 25px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Link reunião</a>
-                            <p>Lembrando que nosso único compromisso é você estar presente no dia e horário da reunião.</p>
+                            <p><strong>Lembrando que nosso único compromisso é você estar presente no dia e horário da reunião.</strong></p>
                         </td>
                     </tr>
                     <!-- Footer -->
