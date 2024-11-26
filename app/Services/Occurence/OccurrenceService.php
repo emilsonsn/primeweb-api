@@ -107,11 +107,22 @@ class OccurrenceService
                     'MeetingScheduling',
                     'Meetingrescheduling',
                 ])) {
+                $subject = "Agendamento de Reunião - Prime Web";
                 $phone = $occurrence->contact->user->phone;
                 $clientName = $occurrence->contact->company;
                 $url = $occurrence->link;
                 $date = $occurrence->date;
                 $time = $occurrence->time;
+
+                if(in_array($occurrence->status, [
+                    'PresentationVisit',
+                    'SchedulingVisit',
+                    'ReschedulingVisit',
+                    'MeetingScheduling',
+                    'Meetingrescheduling',
+                ])){
+                    $subject = "Agendamento de Videochamada - Prime Web";
+                }
 
                 foreach($occurrence->contact->emails as $email){
                     Mail::to($email)->send(new OccurrenceMail(
@@ -119,7 +130,8 @@ class OccurrenceService
                         $clientName,
                         $url,
                         $date,
-                        $time
+                        $time,
+                        $subject
                     ));
                 }
             }
