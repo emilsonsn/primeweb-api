@@ -100,7 +100,13 @@ class OccurrenceService
                 'ip' => request()->ip()
             ]);
 
-            if (in_array($occurrence->status, ['PresentationVisit', 'SchedulingVisit', 'ReschedulingVisit'])) {
+            if (in_array($occurrence->status, [
+                    'PresentationVisit',
+                    'SchedulingVisit',
+                    'ReschedulingVisit',
+                    'MeetingScheduling',
+                    'Meetingrescheduling',
+                ])) {
                 $phone = $occurrence->contact->user->phone;
                 $clientName = $occurrence->contact->company;
                 $url = $occurrence->link;
