@@ -109,7 +109,7 @@ class OccurrenceService
                 ])) {
                 $subject = "Agendamento de Reunião - Prime Web";
                 $phone = $occurrence->contact->user->phone;
-                $clientName = $occurrence->contact->company;
+                $clientName = $occurrence->contact->responsible;
                 $url = $occurrence->link;
                 $date = $occurrence->date;
                 $time = $occurrence->time;
