@@ -30,7 +30,7 @@
                     <!-- Header -->
                     <tr>
                         <td class="header" style="padding: 20px; text-align: center; font-size: 16px;">
-                            <p>agenciaprimeweb.com.br | Tel: {{ $phone }}</p>
+                            <p>agenciaprimeweb.com.br | Tel: (11) 2359-0684</p>
                         </td>
                     </tr>
                     <!-- Logo and introduction -->
@@ -51,7 +51,9 @@
                     <!-- Footer -->
                     <tr>
                         <td style="padding: 10px; background-color: #3e84b5; color: white; text-align: center; font-size: 12px;">
-                            Atenciosamente,<br>Equipe Prime Web
+                            Atenciosamente, <br>
+                            {{ $colaboratorName ?? "Equipe Prime Web" }} <br>
+                            {{ $colaboratorPhone ?? '' }}
                         </td>
                     </tr>
                 </table>

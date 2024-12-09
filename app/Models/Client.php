@@ -22,6 +22,7 @@ class Client extends Model
         'client_responsable_name_2',
         'cep',
         'street',
+        'number',
         'neighborhood',
         'city',
         'state',

@@ -112,23 +112,24 @@ class ClientService
             $rules = [
                 'company' => 'required|string|max:255',
                 'client_responsable_name' => 'required|string|max:255',
-                'client_responsable_name_2' => 'required|string|max:255',
+                'client_responsable_name_2' => 'nullable|string|max:255',
                 'domain' => 'required|string|max:255',
-                'cnpj' => 'required|string|max:14',
+                'cnpj' => 'nullable|string|max:14',
                 'cep' => 'required|string|max:9',
-                'street' => 'required|string|max:255',
-                'neighborhood' => 'required|string|max:255',
-                'city' => 'required|string|max:255',
-                'state' => 'required|string|max:2',
-                'monthly_fee' => 'required|numeric',
-                'payment_first_date' => 'required|date',
-                'duedate_day' => 'required|integer|min:1|max:31',
+                'street' => 'nullable|string|max:255',
+                'number' => 'nullable|string|max:255',
+                'neighborhood' => 'nullable|string|max:255',
+                'city' => 'nullable|string|max:255',
+                'state' => 'nullable|string|max:2',
+                'monthly_fee' => 'nullable|numeric',
+                'payment_first_date' => 'nullable|date',
+                'duedate_day' => 'nullable|integer|min:1|max:31',
                 'final_date' => 'nullable|date',
                 'segment_id' => 'required|exists:segments,id',
                 'consultant_id' => 'required|exists:users,id',
                 'seller_id' => 'required|exists:users,id',
                 'technical_id' => 'required|exists:users,id',
-                'observations' => 'required|string',
+                'observations' => 'nullable|string',
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -147,7 +148,7 @@ class ClientService
                     [
                         'id' => $emailData['id'],
                     ], [
-                        'name' => $emailData['name'],
+                        'name' => $emailData['name'] ?? null,
                         'email' => $emailData['email'],
                         'client_id' => $client->id
                     ]);
@@ -160,7 +161,7 @@ class ClientService
                     [
                         'id' => $phoneData['id'],
                     ], [
-                        'name' => $phoneData['name'],
+                        'name' => $phoneData['name'] ?? null,
                         'phone' => $phoneData['phone'],
                         'client_id' => $client->id
                     ]);
@@ -221,25 +222,26 @@ class ClientService
     {
         try {
             $rules = [
-                'client_responsable_name' => 'required|string|max:255',
-                'client_responsable_name_2' => 'required|string|max:255',
                 'company' => 'required|string|max:255',
+                'client_responsable_name' => 'required|string|max:255',
+                'client_responsable_name_2' => 'nullable|string|max:255',
                 'domain' => 'required|string|max:255',
-                'cnpj' => 'required|string|max:14',
+                'cnpj' => 'nullable|string|max:14',
                 'cep' => 'required|string|max:9',
-                'street' => 'required|string|max:255',
-                'neighborhood' => 'required|string|max:255',
-                'city' => 'required|string|max:255',
-                'state' => 'required|string|max:2',
-                'monthly_fee' => 'required|numeric',
-                'payment_first_date' => 'required|date',
-                'duedate_day' => 'required|integer|min:1|max:31',
+                'street' => 'nullable|string|max:255',
+                'number' => 'nullable|string|max:255',
+                'neighborhood' => 'nullable|string|max:255',
+                'city' => 'nullable|string|max:255',
+                'state' => 'nullable|string|max:2',
+                'monthly_fee' => 'nullable|numeric',
+                'payment_first_date' => 'nullable|date',
+                'duedate_day' => 'nullable|integer|min:1|max:31',
                 'final_date' => 'nullable|date',
                 'segment_id' => 'required|exists:segments,id',
                 'consultant_id' => 'required|exists:users,id',
                 'seller_id' => 'required|exists:users,id',
                 'technical_id' => 'required|exists:users,id',
-                'observations' => 'required|string',
+                'observations' => 'nullable|string',
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -260,7 +262,7 @@ class ClientService
                     [
                         'id' => $emailData['id'],
                     ], [
-                        'name' => $emailData['name'],
+                        'name' => $emailData['name'] ?? null,
                         'email' => $emailData['email'],
                         'client_id' => $client->id
                     ]);
@@ -273,7 +275,7 @@ class ClientService
                     [
                         'id' => $phoneData['id'],
                     ], [
-                        'name' => $phoneData['name'],
+                        'name' => $phoneData['name'] ?? null,
                         'phone' => $phoneData['phone'],
                         'client_id' => $client->id
                     ]);
@@ -363,53 +365,52 @@ class ClientService
     }
 
     public function addContract($request, $client_id)
-{
-    try {
-        $rules = [
-            'number' => 'required|string|max:255',
-            'contract' => 'required|file|mimes:pdf,doc,docx|max:2048',
-            'date_hire' => 'required|date',
-            'number_words_contract' => 'required|integer',
-            'service_type' => 'required|in:PLAN_A,PLAN_B_SILVER,PLAN_B_GOLD',
-            'model' => 'required|in:V1,V2,V3,V4,V5,CLIENT_LAYOUT,CUSTOMIZED,N1,N2,N3',
-            'observations' => 'required|string'
-        ];
+    {
+        try {
+            $rules = [
+                'number' => 'required|string|max:255',
+                'contract' => 'required|file|mimes:pdf,doc,docx|max:8192',
+                'date_hire' => 'required|date',
+                'number_words_contract' => 'required|integer',
+                'service_type' => 'required|in:PLAN_A,PLAN_B_SILVER,PLAN_B_GOLD',
+                'model' => 'required|in:V1,V2,V3,V4,V5,CLIENT_LAYOUT,CUSTOMIZED,N1,N2,N3',
+                'observations' => 'required|string'
+            ];
 
-        $validator = Validator::make($request->all(), $rules);
+            $validator = Validator::make($request->all(), $rules);
 
-        if ($validator->fails()) {
-            return ['status' => false, 'error' => $validator->errors(), 'statusCode' => 400];
+            if ($validator->fails()) {
+                return ['status' => false, 'error' => $validator->errors(), 'statusCode' => 400];
+            }
+
+            $client = Client::find($client_id);
+
+            if (!$client) throw new Exception('Cliente não encontrado');
+
+            if ($request->hasFile('contract')) {
+                $file = $request->file('contract');
+                $path = $file->store('contracts', 'public'); 
+            } else {
+                throw new Exception('Arquivo do contrato não foi enviado.');
+            }
+
+            $data = $validator->validated();
+            $data['client_id'] = $client_id;
+            $data['path'] = $path;
+
+            $contract = ClientContract::create($data);
+
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'ip' => request()->ip(),
+                'action' => "Adicionou o contrato {$contract->number} ao cliente {$client->company} ($client->id)"
+            ]);
+
+            return ['status' => true, 'data' => $contract];
+        } catch (Exception $error) {
+            return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
         }
-
-        $client = Client::find($client_id);
-
-        if (!$client) throw new Exception('Cliente não encontrado');
-
-        if ($request->hasFile('contract')) {
-            $file = $request->file('contract');
-            $path = $file->store('contracts', 'public'); 
-        } else {
-            throw new Exception('Arquivo do contrato não foi enviado.');
-        }
-
-        $data = $validator->validated();
-        $data['client_id'] = $client_id;
-        $data['path'] = $path;
-
-        $contract = ClientContract::create($data);
-
-        Log::create([
-            'user_id' => Auth::user()->id,
-            'ip' => request()->ip(),
-            'action' => "Adicionou o contrato {$contract->number} ao cliente {$client->company} ($client->id)"
-        ]);
-
-        return ['status' => true, 'data' => $contract];
-    } catch (Exception $error) {
-        return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
     }
-}
-
 
     public function deleteContract($contract_id)
     {
@@ -438,6 +439,5 @@ class ClientService
         } catch (Exception $error) {
             return ['status' => false, 'error' => $error->getMessage(), 'statusCode' => 400];
         }
-}
-
+    }
 }

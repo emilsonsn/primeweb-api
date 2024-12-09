@@ -114,13 +114,7 @@ class OccurrenceService
                 $date = $occurrence->date;
                 $time = $occurrence->time;
 
-                if(in_array($occurrence->status, [
-                    'PresentationVisit',
-                    'SchedulingVisit',
-                    'ReschedulingVisit',
-                    'MeetingScheduling',
-                    'Meetingrescheduling',
-                ])){
+                if($occurrence->status == 'Meetingrescheduling'){
                     $subject = "Agendamento de Videochamada - Prime Web";
                 }
 
