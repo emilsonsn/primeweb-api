@@ -77,6 +77,7 @@ class OccurrenceService
                 'time' => 'required',
                 'status' => 'required|in:Lead,PresentationVisit,ConvertedContact,MeetingScheduling,Meetingrescheduling,SchedulingVisit,ReschedulingVisit,DelegationContact,InNegotiation,Closed,Lost',
                 'link' => 'nullable|url',
+                'address' => 'nullable|string',
                 'observations' => 'nullable|string',
                 'phone_call_id' => 'nullable|integer',
                 'contact_id' => 'nullable|integer',
@@ -101,34 +102,39 @@ class OccurrenceService
             ]);
 
             if (in_array($occurrence->status, [
-                    'PresentationVisit',
-                    'SchedulingVisit',
-                    'ReschedulingVisit',
-                    'MeetingScheduling',
-                    'Meetingrescheduling',
-                ])) {
-                $subject = "Agendamento de Reunião - Prime Web";
+                'SchedulingVisit',
+                'ReschedulingVisit',
+                'MeetingScheduling',
+                'Meetingrescheduling',
+            ])) {
                 $phone = $occurrence->contact->user->phone;
                 $clientName = $occurrence->contact->responsible;
-                $url = $occurrence->link;
+                $url = $occurrence->link ?? null;
+                $address = $occurrence->address ?? null;
                 $date = $occurrence->date;
                 $time = $occurrence->time;
-
-                if($occurrence->status == 'Meetingrescheduling'){
-                    $subject = "Agendamento de Videochamada - Prime Web";
-                }
-
-                foreach($occurrence->contact->emails as $email){
+            
+                $subjects = [
+                    'SchedulingVisit' => "Agendamento de Reunião - Prime Web",
+                    'ReschedulingVisit' => "Reagendamento de Reunião - Prime Web",
+                    'MeetingScheduling' => "Agendamento de Videochamada - Prime Web",
+                    'Meetingrescheduling' => "Reagendamento de Videochamada - Prime Web",
+                ];
+            
+                $subject = $subjects[$occurrence->status] ?? 'Assunto não definido';
+            
+                foreach ($occurrence->contact->emails as $email) {
                     Mail::to($email)->send(new OccurrenceMail(
                         $phone,
                         $clientName,
                         $url,
+                        $address,
                         $date,
                         $time,
                         $subject
                     ));
                 }
-            }
+            }            
 
             return ['status' => true, 'data' => $occurrence];
         } catch (Exception $error) {
@@ -144,17 +150,29 @@ class OccurrenceService
     
             $phone = $occurrence->contact->user->phone;
             $clientName = $occurrence->contact->company;
-            $url = $occurrence->link;
+            $url = $occurrence->link ?? null;
+            $address = $occurrence->address ?? null;
             $date = $occurrence->date;
             $time = $occurrence->time;
+
+            $subjects = [
+                'SchedulingVisit' => "Agendamento de Reunião - Prime Web",
+                'ReschedulingVisit' => "Reagendamento de Reunião - Prime Web",
+                'MeetingScheduling' => "Agendamento de Videochamada - Prime Web",
+                'Meetingrescheduling' => "Reagendamento de Videochamada - Prime Web",
+            ];
+        
+            $subject = $subjects[$occurrence->status] ?? 'Assunto não definido';
 
             foreach($occurrence->contact->emails as $email){
                 Mail::to($email)->send(new OccurrenceMail(
                     $phone,
                     $clientName,
                     $url,
+                    $address,
                     $date,
-                    $time
+                    $time,
+                    $subject
                 ));
             }
 

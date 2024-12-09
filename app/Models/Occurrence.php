@@ -23,6 +23,7 @@ class Occurrence extends Model
         'time',
         'status',
         'link',
+        'address',
         'observations',
     ];
 

@@ -13,6 +13,7 @@ class OccurrenceMail extends Mailable
 
     public $phone;
     public $clientName;
+    public $address;
     public $url;
     public $date;
     public $time;
@@ -24,11 +25,12 @@ class OccurrenceMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($phone, $clientName, $url, $date, $time, $subject = "Agendamento de Reunião - Prime Web" )
+    public function __construct($phone, $clientName, $url, $address, $date, $time, $subject = "Agendamento de Reunião - Prime Web" )
     {
         $this->phone = $phone;
         $this->clientName = $clientName;
         $this->url = $url;
+        $this->address = $address;
         $this->date = $date;
         $this->time = $time;
         $this->subject = $subject;
@@ -49,6 +51,7 @@ class OccurrenceMail extends Mailable
                          'phone' => $this->phone,
                          'clientName' => $this->clientName,
                          'url' => $this->url,
+                         'address' => $this->address,
                          'date' => $this->date,
                          'time' => $this->time,
                          'colaboratorName' => $this->colaboratorName,

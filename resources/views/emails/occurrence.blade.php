@@ -42,11 +42,21 @@
                     </tr>
                     <!-- Meeting details -->
                     <tr>
-                        <td style="padding: 20px; text-align: center; border-top: 2px dashed #ccc;">
-                            <p>Segue link para reunião conforme combinado para data de {{ Carbon::createFromFormat('Y-m-d H:i', $date . ' ' . $time)->format('d/m/Y H:i') }}</p>
-                            <a href="{{ $url }}" style="display: inline-block; margin: 20px 0; padding: 10px 25px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Link reunião</a>
-                            <p><strong>Lembrando que nosso único compromisso é você estar presente no dia e horário da reunião.</strong></p>
-                        </td>
+                        @if($url)
+                            <td style="padding: 20px; text-align: center; border-top: 2px dashed #ccc;">
+                                <p>Segue link para reunião conforme combinado para data de {{ Carbon::createFromFormat('Y-m-d H:i', $date . ' ' . $time)->format('d/m/Y H:i') }}</p>
+                                <a href="{{ $url }}" style="display: inline-block; margin: 20px 0; padding: 10px 25px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Link reunião</a>
+                                <p><strong>Lembrando que nosso único compromisso é você estar presente no dia e horário da reunião.</strong></p>
+                            </td>
+                        @endif
+
+                        @if($address)
+                            <td style="padding: 20px; text-align: center; border-top: 2px dashed #ccc;">
+                                <p>Segue o endereço da reunião conforme combinado para data de {{ Carbon::createFromFormat('Y-m-d H:i', $date . ' ' . $time)->format('d/m/Y H:i') }}</p>
+                                <p>{{ $address }}</p>
+                                <p><strong>Lembrando que nosso único compromisso é você estar presente no dia e horário da reunião.</strong></p>
+                            </td>
+                        @endif
                     </tr>
                     <!-- Footer -->
                     <tr>
