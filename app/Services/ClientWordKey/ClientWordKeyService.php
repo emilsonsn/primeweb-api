@@ -87,7 +87,7 @@ class ClientWordKeyService
             if (!$clientWordKey) throw new Exception('Palavra chave não encontrada');
 
             $word_key = $clientWordKey->word_key;
-            $clientName = $$clientWordKey->client->name;
+            $clientName = $clientWordKey->client->name;
             
             $clientWordKey->delete();
 
