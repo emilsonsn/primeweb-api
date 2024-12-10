@@ -373,14 +373,13 @@ class ClientService
                 'date_hire' => 'required|date',
                 'number_words_contract' => 'required|integer',
                 'service_type' => 'required|in:PLAN_A,PLAN_B_SILVER,PLAN_B_GOLD',
-                'model' => 'required|in:V1,V2,V3,V4,V5,CLIENT_LAYOUT,CUSTOMIZED,N1,N2,N3',
                 'observations' => 'required|string'
             ];
 
             $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
-                return ['status' => false, 'error' => $validator->errors(), 'statusCode' => 400];
+                throw new Exception($validator->errors(), 400);
             }
 
             $client = Client::find($client_id);
