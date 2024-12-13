@@ -51,7 +51,7 @@ class ClientService
     public function search($request)
     {
         try {
-            $perPage = $request->input('take', 10);
+            $perPage = $request->input('take', 10);            
     
             $clients = Client::with([
                 'segment',
@@ -62,7 +62,7 @@ class ClientService
                 'phones',
                 'contracts',
                 'status'
-            ]);
+            ])->orderBy('id', 'desc');
     
             $auth = Auth::user();
     
@@ -95,7 +95,10 @@ class ClientService
             }
     
             if ($request->filled('status')) {
-                $clients->where('status', $request->status);
+                $status = $request->status;
+                $clients->whereHas('status', function($query) use ($status){
+                    $query->where('status', $status);
+                } );
             }
     
             $clients = $clients->paginate($perPage);
@@ -369,11 +372,11 @@ class ClientService
         try {
             $rules = [
                 'number' => 'required|string|max:255',
-                'contract' => 'required|file|mimes:pdf,doc,docx|max:8192',
+                'contract' => 'required|file|mimes:pdf,doc,docx|max:24576',
                 'date_hire' => 'required|date',
                 'number_words_contract' => 'required|integer',
                 'service_type' => 'required|in:PLAN_A,PLAN_B_SILVER,PLAN_B_GOLD',
-                'observations' => 'required|string'
+                'observations' => 'nullable|string'
             ];
 
             $validator = Validator::make($request->all(), $rules);
