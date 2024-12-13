@@ -190,9 +190,9 @@ class OccurrenceService
             if (!$occurrence) throw new Exception('Occurrence not found');
 
             $rules = [                
-                'date' => 'date',
+                'date' => 'nullable|date',
                 'time' => 'nullable',
-                'status' => 'required|in:Lead,PresentationVisit,ConvertedContact,MeetingScheduling,Meetingrescheduling,SchedulingVisit,ReschedulingVisit,DelegationContact,InNegotiation,Closed,Lost',
+                'status' => 'nullable||in:Lead,PresentationVisit,ConvertedContact,MeetingScheduling,Meetingrescheduling,SchedulingVisit,ReschedulingVisit,DelegationContact,InNegotiation,Closed,Lost',
                 'link' => 'nullable|url',
                 'observations' => 'nullable|string'
             ];            
